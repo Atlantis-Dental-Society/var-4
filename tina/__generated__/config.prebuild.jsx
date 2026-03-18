@@ -1,0 +1,113 @@
+// tina/config.ts
+import { defineConfig } from "tinacms";
+var config_default = defineConfig({
+  branch: process.env.TINA_BRANCH || process.env.VERCEL_GIT_COMMIT_REF || "main",
+  clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID || "",
+  token: process.env.TINA_TOKEN || "",
+  build: {
+    outputFolder: "admin",
+    publicFolder: "public"
+  },
+  media: {
+    tina: {
+      mediaRoot: "uploads",
+      publicFolder: "public"
+    }
+  },
+  schema: {
+    collections: [
+      {
+        name: "page",
+        label: "Pages",
+        path: "content/pages",
+        format: "mdx",
+        fields: [
+          { type: "string", name: "title", label: "Title", required: true },
+          { type: "string", name: "description", label: "Description" },
+          { type: "image", name: "heroImage", label: "Hero Image" },
+          { type: "rich-text", name: "body", label: "Body", isBody: true }
+        ]
+      },
+      {
+        name: "insight",
+        label: "Insights",
+        path: "content/insights",
+        format: "mdx",
+        fields: [
+          { type: "string", name: "title", label: "Title", required: true },
+          { type: "image", name: "coverImage", label: "Cover Image", required: true },
+          { type: "string", name: "excerpt", label: "Excerpt" },
+          { type: "rich-text", name: "body", label: "Body", isBody: true },
+          { type: "string", name: "author", label: "Author", required: true },
+          { type: "string", name: "authorPosition", label: "Author Position" },
+          { type: "image", name: "authorImage", label: "Author Image" },
+          { type: "datetime", name: "publishedDate", label: "Published Date", required: true },
+          { type: "datetime", name: "updatedDate", label: "Updated Date" },
+          {
+            type: "string",
+            name: "category",
+            label: "Category",
+            options: ["Technology", "Clinical", "Practice Management", "Patient Care", "Industry News"]
+          }
+        ]
+      },
+      {
+        name: "service",
+        label: "Services",
+        path: "content/services",
+        format: "mdx",
+        fields: [
+          { type: "string", name: "title", label: "Title", required: true },
+          { type: "string", name: "description", label: "Short Description" },
+          { type: "image", name: "image", label: "Image" },
+          { type: "string", name: "icon", label: "Icon Name" },
+          { type: "string", name: "features", label: "Features", list: true },
+          { type: "rich-text", name: "body", label: "Full Description", isBody: true },
+          { type: "number", name: "order", label: "Display Order" }
+        ]
+      },
+      {
+        name: "teamMember",
+        label: "Team Members",
+        path: "content/team",
+        format: "mdx",
+        fields: [
+          { type: "string", name: "name", label: "Name", required: true },
+          { type: "string", name: "position", label: "Position", required: true },
+          { type: "string", name: "specialty", label: "Specialty" },
+          { type: "image", name: "photo", label: "Photo" },
+          { type: "rich-text", name: "bio", label: "Biography", isBody: true },
+          { type: "string", name: "email", label: "Email" },
+          { type: "number", name: "order", label: "Display Order" }
+        ]
+      },
+      {
+        name: "event",
+        label: "Events",
+        path: "content/events",
+        format: "mdx",
+        fields: [
+          { type: "string", name: "title", label: "Title", required: true },
+          { type: "datetime", name: "date", label: "Event Date", required: true },
+          { type: "datetime", name: "endDate", label: "End Date" },
+          { type: "string", name: "time", label: "Time" },
+          { type: "string", name: "location", label: "Location" },
+          { type: "image", name: "image", label: "Image" },
+          { type: "string", name: "description", label: "Description" },
+          {
+            type: "string",
+            name: "category",
+            label: "Category",
+            options: ["Conference", "Workshop", "Networking", "Gala", "Forum"]
+          },
+          { type: "boolean", name: "featured", label: "Featured Event" },
+          { type: "rich-text", name: "body", label: "Full Details", isBody: true },
+          { type: "string", name: "registrationUrl", label: "Registration URL" }
+        ]
+      }
+    ]
+  }
+});
+export {
+  config_default as default
+};
