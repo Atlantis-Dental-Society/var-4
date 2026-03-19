@@ -18,7 +18,7 @@ import {
 import { AlertCircle } from "lucide-react";
 import { slugify } from "@/lib/utils";
 
-export type Insight = InsightInput & { id: number; createdAt: string; updatedAt: string };
+export type Insight = InsightInput & { id: string; createdAt: string; updatedAt: string };
 
 interface InsightFormProps {
   initial: Insight | null;
