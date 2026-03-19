@@ -1,7 +1,8 @@
 node_modules/
 .next/
 tina/__generated__/
-/.env.local
+.env*.local
+drizzle/
 /.idea/.gitignore
 /ADS X Farhaan.docx
 /.idea/codeStyles/codeStyleConfig.xml
