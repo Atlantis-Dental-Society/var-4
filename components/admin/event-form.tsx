@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { AlertCircle } from "lucide-react";
 
-export type Event = EventInput & { id: number; createdAt: string; updatedAt: string };
+export type Event = EventInput & { id: string; createdAt: string; updatedAt: string };
 
 interface EventFormProps {
   initial: Event | null;

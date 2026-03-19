@@ -20,7 +20,7 @@ export default function AdminEventsPage() {
 
   useEffect(() => { loadEvents(); }, []);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this event?")) return;
     await fetch(`/api/events/${id}`, { method: "DELETE" });
     loadEvents();

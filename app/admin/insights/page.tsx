@@ -20,7 +20,7 @@ export default function AdminInsightsPage() {
 
   useEffect(() => { loadInsights(); }, []);
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: string) => {
     if (!confirm("Delete this insight?")) return;
     await fetch(`/api/insights/${id}`, { method: "DELETE" });
     loadInsights();
