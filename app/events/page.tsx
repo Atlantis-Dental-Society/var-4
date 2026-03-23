@@ -2,7 +2,8 @@ import { getPageContent } from "@/lib/tina";
 import { db } from "@/lib/db";
 import { events } from "@/lib/schema";
 import { eq } from "drizzle-orm";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Clock } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/page-hero";
 import { EventCard } from "@/components/event-card";
 
@@ -39,21 +40,41 @@ export default async function EventsPage() {
 
       <section className="-mt-8 pb-24">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-extrabold">Upcoming Events</h2>
+          {/* Upcoming Events */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10">
+              <CalendarDays className="h-5 w-5 text-primary" />
+            </div>
+            <h2 className="text-2xl font-extrabold">Upcoming Events</h2>
+          </div>
+
           {upcoming.length === 0 ? (
-            <p className="mt-4 text-muted-foreground">No upcoming events at the moment. Check back soon!</p>
+            <Card className="rounded-2xl border-none ring-0 shadow-warm">
+              <CardContent className="flex items-center gap-4 p-8">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted shrink-0">
+                  <Clock className="h-6 w-6 text-muted-foreground" />
+                </div>
+                <p className="text-muted-foreground">No upcoming events at the moment. Check back soon!</p>
+              </CardContent>
+            </Card>
           ) : (
-            <div className="mt-6 space-y-6">
+            <div className="space-y-6">
               {upcoming.map((e) => (
                 <EventCard key={e.id} event={e} />
               ))}
             </div>
           )}
 
+          {/* Past Events */}
           {past.length > 0 && (
             <>
-              <h2 className="mt-16 text-2xl font-extrabold">Past Events</h2>
-              <div className="mt-6 space-y-6">
+              <div className="flex items-center gap-3 mt-16 mb-6">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted">
+                  <CalendarDays className="h-5 w-5 text-muted-foreground" />
+                </div>
+                <h2 className="text-2xl font-extrabold">Past Events</h2>
+              </div>
+              <div className="space-y-6">
                 {past.map((e) => (
                   <EventCard key={e.id} event={e} isPast />
                 ))}

@@ -4,13 +4,40 @@
   "hero": {
     "badge": "Join ADS",
     "headline": "Join Atlantis Dental Society",
-    "subheadline": "If you are interested in becoming part of Atlantis Dental Society, we would love to hear from you. Our Join section is designed to help us learn more about the students who want to be involved in ADS and better understand their goals, interests, and experiences."
+    "subheadline": "If you are interested in becoming part of Atlantis Dental Society, we would love to hear from you."
   },
   "sections": [
     {
+      "id": "why-join",
+      "heading": "What You Get as a Member",
+      "body": "Our community is designed to help students who are serious about dentistry connect with the support they need.",
+      "items": [
+        {
+          "icon": "CalendarDays",
+          "title": "Exclusive Events",
+          "description": "Access to workshops, panels, and networking sessions designed for pre-dental students."
+        },
+        {
+          "icon": "HeartHandshake",
+          "title": "Mentorship Access",
+          "description": "Connect with mentors who can guide you on your path to dental school."
+        },
+        {
+          "icon": "BookOpen",
+          "title": "Resources & Guides",
+          "description": "Curated materials to help you prepare academically and professionally."
+        },
+        {
+          "icon": "Users",
+          "title": "Community & Support",
+          "description": "Join a group of like-minded students who share your goals and aspirations."
+        }
+      ]
+    },
+    {
       "id": "eligibility",
       "heading": "Eligibility Note",
-      "body": "Please note that while students from different schools may be welcome to engage with Atlantis Dental Society, only York University students are eligible to hold executive positions at this time. The current questions are being used as a starting point and will need to be revised over time to better match the goals and growth of the society."
+      "body": "While students from different schools are welcome to engage with Atlantis Dental Society, only York University students are eligible to hold executive positions at this time. The application questions are a starting point and will be revised over time to better match the goals and growth of the society."
     }
   ]
 }

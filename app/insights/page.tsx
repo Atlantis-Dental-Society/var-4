@@ -2,6 +2,8 @@ import { getPageContent } from "@/lib/tina";
 import { db } from "@/lib/db";
 import { insights } from "@/lib/schema";
 import { eq } from "drizzle-orm";
+import { BookOpen } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/page-hero";
 import { InsightCard } from "@/components/insight-card";
 
@@ -33,7 +35,14 @@ export default async function InsightsPage() {
       <section className="-mt-8 pb-24">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {allInsights.length === 0 ? (
-            <p className="text-muted-foreground">No insights published yet. Check back soon!</p>
+            <Card className="rounded-2xl border-none ring-0 shadow-warm">
+              <CardContent className="flex items-center gap-4 p-8">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 shrink-0">
+                  <BookOpen className="h-6 w-6 text-primary" />
+                </div>
+                <p className="text-muted-foreground">No insights published yet. Check back soon!</p>
+              </CardContent>
+            </Card>
           ) : (
             <div className="grid gap-8 sm:grid-cols-2">
               {allInsights.map((post) => (
