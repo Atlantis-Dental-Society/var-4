@@ -5,7 +5,7 @@ import { db } from "./db";
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
-  trustedOrigins: ["http://localhost:*"],
+  trustedOrigins: ["http://localhost:*", "https://*.vercel.app"],
   database: drizzleAdapter(db, {
     provider: "pg",
   }),
