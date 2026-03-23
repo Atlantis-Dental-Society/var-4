@@ -33,7 +33,7 @@ export default async function JoinPage() {
 
       {/* Why Join - Feature cards */}
       {itemSections.map((section) => {
-        const items = (section.items ?? []).filter(Boolean);
+        const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
         return (
           <section key={section.id} className="-mt-4 pb-16">
             <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

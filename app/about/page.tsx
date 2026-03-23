@@ -64,7 +64,7 @@ export default async function AboutPage() {
       {sections
         .filter((s) => s.items && s.items.length > 0)
         .map((section, i) => {
-          const items = (section.items ?? []).filter(Boolean);
+          const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
           const isAlt = i % 2 === 0;
           const color = isAlt ? "sage" : "primary";
           const colorMap = {

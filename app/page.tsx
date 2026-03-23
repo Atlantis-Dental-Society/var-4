@@ -139,7 +139,7 @@ function FeatureGridSection({
   color?: "primary" | "sage" | "terracotta";
   columns?: 2 | 3;
 }) {
-  const items = (section.items ?? []).filter(Boolean);
+  const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
   const Icon = sectionIcons[section.id ?? ""] || Sparkles;
   const colorMap = {
     primary: { bg: "bg-primary/10", text: "text-primary", gradient: "from-primary/6 to-primary/2" },
@@ -193,7 +193,7 @@ function FeatureGridSection({
 
 /* ── Split Feature Section: Text left, item cards right ── */
 function SplitFeatureSection({ section }: { section: Section }) {
-  const items = (section.items ?? []).filter(Boolean);
+  const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
 
   return (
     <section className="py-24 sm:py-28">

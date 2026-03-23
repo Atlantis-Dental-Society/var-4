@@ -60,7 +60,7 @@ export default async function PartnerPage() {
 
       {/* Item sections as feature card grids */}
       {itemSections.map((section) => {
-        const items = (section.items ?? []).filter(Boolean);
+        const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
         return (
           <section key={section.id} className="relative py-24 sm:py-28 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-muted/30 to-transparent" />
