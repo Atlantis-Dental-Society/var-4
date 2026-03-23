@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Leaf, Menu } from "lucide-react";
+import { Leaf, Menu, LogIn, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -12,6 +12,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { ThemeToggle } from "./theme-toggle";
+import { authClient } from "@/lib/auth-client";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -26,6 +27,8 @@ const navLinks = [
 ];
 
 export function Header() {
+  const { data: session } = authClient.useSession();
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/30 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -55,6 +58,27 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
+
+          {!session ? (
+            <div className="hidden items-center gap-1.5 lg:flex">
+              <Button asChild variant="ghost" size="sm" className="rounded-full gap-1.5">
+                <Link href="/login">
+                  <LogIn className="h-3.5 w-3.5" />
+                  Login
+                </Link>
+              </Button>
+              <Button asChild size="sm" className="rounded-full gap-1.5 shadow-gold">
+                <Link href="/signup">
+                  <UserPlus className="h-3.5 w-3.5" />
+                  Sign Up
+                </Link>
+              </Button>
+            </div>
+          ) : (
+            <Button asChild variant="ghost" size="sm" className="hidden rounded-full lg:inline-flex">
+              <Link href="/admin">Dashboard</Link>
+            </Button>
+          )}
 
           <Sheet>
             <SheetTrigger asChild>
@@ -87,6 +111,27 @@ export function Header() {
                     </Link>
                   </SheetClose>
                 ))}
+                <div className="my-2 h-px bg-border/30" />
+                {!session ? (
+                  <>
+                    <SheetClose asChild>
+                      <Link href="/login" className="rounded-2xl px-4 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-primary/10 hover:text-primary">
+                        Login
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/signup" className="rounded-2xl px-4 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/10">
+                        Sign Up
+                      </Link>
+                    </SheetClose>
+                  </>
+                ) : (
+                  <SheetClose asChild>
+                    <Link href="/admin" className="rounded-2xl px-4 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary/10">
+                      Dashboard
+                    </Link>
+                  </SheetClose>
+                )}
               </nav>
             </SheetContent>
           </Sheet>

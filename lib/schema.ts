@@ -1,5 +1,7 @@
 import { pgTable, uuid, text, timestamp, boolean, date } from "drizzle-orm/pg-core";
 
+export { user, session, account, verification, userRelations, sessionRelations, accountRelations } from "./auth-schema";
+
 export const events = pgTable("events", {
   id: uuid("id").defaultRandom().primaryKey(),
   title: text("title").notNull(),
