@@ -30,6 +30,8 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
     .where(and(eq(photos.entityType, "insights"), eq(photos.entityId, post.id)))
     .orderBy(photos.order);
 
+  const bannerUrl = postPhotos[0]?.url ?? post.coverImageUrl;
+
   return (
     <article className="relative overflow-hidden py-16 sm:py-20">
       <div className="absolute -top-32 -right-32 h-96 w-96 blob-shape-1 bg-primary/5 blur-3xl" />
@@ -41,19 +43,16 @@ export default async function InsightPage({ params }: { params: Promise<{ slug: 
           </Link>
         </Button>
 
-        {(() => {
-          const bannerUrl = postPhotos[0]?.url ?? post.coverImageUrl;
-          return bannerUrl ? (
-            <div className="aspect-[2/1] rounded-3xl overflow-hidden mb-10 relative">
-              <Image src={bannerUrl} alt={post.title ?? ""} fill className="object-cover" sizes="(max-width: 768px) 100vw, 768px" priority />
-            </div>
-          ) : (
-            <div className={`aspect-[2/1] rounded-3xl bg-gradient-to-br ${categoryGradients[post.category ?? ""] || "from-primary/15 to-sage/10"} flex items-center justify-center mb-10 relative overflow-hidden`}>
-              <div className="absolute -top-10 -right-10 h-40 w-40 blob-shape-1 bg-warm-cream/10 blur-xl" />
-              <span className="text-5xl text-primary/20 font-extrabold">{post.category}</span>
-            </div>
-          );
-        })()}
+        {bannerUrl ? (
+          <div className="aspect-[2/1] rounded-3xl overflow-hidden mb-10 relative">
+            <Image src={bannerUrl} alt={post.title ?? ""} fill className="object-cover" sizes="(max-width: 768px) 100vw, 768px" priority />
+          </div>
+        ) : (
+          <div className={`aspect-[2/1] rounded-3xl bg-gradient-to-br ${categoryGradients[post.category ?? ""] || "from-primary/15 to-sage/10"} flex items-center justify-center mb-10 relative overflow-hidden`}>
+            <div className="absolute -top-10 -right-10 h-40 w-40 blob-shape-1 bg-warm-cream/10 blur-xl" />
+            <span className="text-5xl text-primary/20 font-extrabold">{post.category}</span>
+          </div>
+        )}
 
         {post.category && (
           <Badge variant="secondary" className="h-auto rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary uppercase tracking-wider">{post.category}</Badge>

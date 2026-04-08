@@ -20,7 +20,7 @@ export default async function InsightsPage() {
   const insightIds = allInsights.map((i) => i.id);
   const allPhotos = insightIds.length > 0
     ? await db
-        .select()
+        .select({ entityId: photos.entityId, url: photos.url })
         .from(photos)
         .where(and(eq(photos.entityType, "insights"), inArray(photos.entityId, insightIds)))
         .orderBy(photos.order)

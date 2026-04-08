@@ -6,41 +6,35 @@ import { buildNewEventEmail, buildNewInsightEmail } from "./email-templates";
 import type { events, insights } from "./schema";
 
 async function getSubscribedEmails() {
-  const users = await db
+  return db
     .select({ email: user.email, name: user.name })
     .from(user)
     .where(eq(user.emailNotifications, true));
-  return users;
+}
+
+function notifySubscribers(
+  buildEmail: () => { subject: string; html: string; text: string },
+  label: string,
+) {
+  (async () => {
+    try {
+      const users = await getSubscribedEmails();
+      const email = buildEmail();
+      await Promise.allSettled(
+        users.map((u) =>
+          sendEmail({ to: u.email, subject: email.subject, html: email.html, text: email.text }),
+        ),
+      );
+    } catch (err) {
+      console.error(`[email-notifications] Failed to send ${label} emails:`, err);
+    }
+  })();
 }
 
 export function notifyNewEvent(event: typeof events.$inferSelect) {
-  (async () => {
-    try {
-      const users = await getSubscribedEmails();
-      const email = buildNewEventEmail(event);
-      await Promise.allSettled(
-        users.map((u) =>
-          sendEmail({ to: u.email, subject: email.subject, html: email.html, text: email.text }),
-        ),
-      );
-    } catch (err) {
-      console.error("[email-notifications] Failed to send event emails:", err);
-    }
-  })();
+  notifySubscribers(() => buildNewEventEmail(event), "event");
 }
 
 export function notifyNewInsight(insight: typeof insights.$inferSelect) {
-  (async () => {
-    try {
-      const users = await getSubscribedEmails();
-      const email = buildNewInsightEmail(insight);
-      await Promise.allSettled(
-        users.map((u) =>
-          sendEmail({ to: u.email, subject: email.subject, html: email.html, text: email.text }),
-        ),
-      );
-    } catch (err) {
-      console.error("[email-notifications] Failed to send insight emails:", err);
-    }
-  })();
+  notifySubscribers(() => buildNewInsightEmail(insight), "insight");
 }

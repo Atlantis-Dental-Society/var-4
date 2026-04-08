@@ -1,11 +1,12 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { CalendarDays, FileText, LayoutDashboard, LogOut, Menu, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetClose } from "@/components/ui/sheet";
+import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 
@@ -21,6 +22,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const [sheetOpen, setSheetOpen] = useState(false);
+
+  useEffect(() => { setSheetOpen(false); }, [pathname]);
 
   if (isPending) {
     return (
@@ -93,7 +97,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex min-h-[calc(100vh-4.5rem)]">
-      {/* Desktop sidebar */}
       <aside className="hidden md:flex w-56 shrink-0 border-r border-border/30 bg-muted/30 p-4 flex-col">
         <div className="flex items-center gap-2 px-3 py-2 mb-2">
           <LayoutDashboard className="h-5 w-5 text-primary" />
@@ -103,10 +106,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {sidebarContent}
       </aside>
 
-      {/* Mobile header + sheet */}
       <div className="flex flex-1 flex-col">
         <div className="flex items-center gap-3 border-b border-border/30 bg-muted/30 px-4 py-3 md:hidden">
-          <Sheet>
+          <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-lg" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
@@ -120,45 +122,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </SheetTitle>
               </SheetHeader>
               <div className="mt-4 flex flex-col flex-1">
-                <nav className="space-y-1 flex-1">
-                  {navItems.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                      <SheetClose key={item.href} asChild>
-                        <Button
-                          asChild
-                          variant={isActive ? "secondary" : "ghost"}
-                          className={cn(
-                            "w-full justify-start gap-2.5 rounded-lg",
-                            isActive && "bg-primary/10 text-primary hover:bg-primary/15"
-                          )}
-                        >
-                          <Link href={item.href}>
-                            <item.icon className="h-4 w-4" />
-                            {item.label}
-                          </Link>
-                        </Button>
-                      </SheetClose>
-                    );
-                  })}
-                </nav>
-                <Separator className="my-4 bg-border/30" />
-                <div className="px-1">
-                  <p className="mb-2 truncate px-2 text-xs text-muted-foreground">
-                    {session?.user.email}
-                  </p>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-2.5 rounded-lg text-muted-foreground hover:text-destructive"
-                    onClick={async () => {
-                      await authClient.signOut();
-                      router.push("/login");
-                    }}
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Sign Out
-                  </Button>
-                </div>
+                {sidebarContent}
               </div>
             </SheetContent>
           </Sheet>
