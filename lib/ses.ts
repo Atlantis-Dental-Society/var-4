@@ -4,7 +4,7 @@ const ses = new SESv2Client({
   region: process.env.AWS_REGION || "us-east-1",
 });
 
-const fromEmail = process.env.SES_FROM_EMAIL || "noreply@atlantisdentalsociety.com";
+const fromEmail = process.env.SES_FROM_EMAIL || "noreply@atlantisdentalsociety.ca";
 
 export async function sendEmail({
   to,

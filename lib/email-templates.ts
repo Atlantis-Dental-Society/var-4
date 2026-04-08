@@ -1,6 +1,6 @@
 import type { events, insights } from "./schema";
 
-const baseUrl = process.env.BETTER_AUTH_URL || "http://localhost:3000";
+const baseUrl = process.env.BETTER_AUTH_URL || "https://atlantisdentalsociety.ca";
 
 function wrapHtml(content: string) {
   return `<!DOCTYPE html>
