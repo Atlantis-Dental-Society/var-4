@@ -23,7 +23,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ArrowLeft, Plus, Trash2, Loader2, GripVertical } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Loader2, ChevronUp, ChevronDown } from "lucide-react";
 import { getIcon } from "@/lib/icons";
 import type { HeroData, SectionData, SectionItem } from "@/lib/schema";
 
@@ -34,6 +34,12 @@ const iconNames = [
   "Award", "Link2", "FolderOpen", "UserCheck", "Target", "Globe",
   "Building2", "Megaphone", "PresentationIcon",
 ];
+
+// Stable keys for React reconciliation
+let keyCounter = 0;
+function nextKey() { return `s-${++keyCounter}`; }
+
+type SectionWithKey = SectionData & { _key: string };
 
 interface PageData {
   slug: string;
@@ -51,7 +57,7 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [hero, setHero] = useState<HeroData>({});
-  const [sections, setSections] = useState<SectionData[]>([]);
+  const [sections, setSections] = useState<SectionWithKey[]>([]);
 
   useEffect(() => {
     fetch(`/api/admin/pages/${slug}`)
@@ -61,7 +67,7 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
         setTitle(data.title);
         setDescription(data.description ?? "");
         setHero(data.hero ?? {});
-        setSections(data.sections ?? []);
+        setSections((data.sections ?? []).map((s) => ({ ...s, _key: nextKey() })));
         setLoading(false);
       })
       .catch(() => router.push("/admin/pages"));
@@ -70,10 +76,12 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
   const save = async () => {
     setSaving(true);
     try {
+      // Strip _key before sending
+      const cleanSections = sections.map(({ _key, ...rest }) => rest);
       const res = await fetch(`/api/admin/pages/${slug}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, hero, sections }),
+        body: JSON.stringify({ title, description, hero, sections: cleanSections }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -93,11 +101,22 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
   };
 
   const addSection = () => {
-    setSections((s) => [...s, { id: "", heading: "", body: "", items: [] }]);
+    const id = `section-${Date.now()}`;
+    setSections((s) => [...s, { _key: nextKey(), id, heading: "", body: "", items: [] }]);
   };
 
   const removeSection = (index: number) => {
     setSections((s) => s.filter((_, i) => i !== index));
+  };
+
+  const moveSection = (index: number, direction: -1 | 1) => {
+    setSections((s) => {
+      const newIndex = index + direction;
+      if (newIndex < 0 || newIndex >= s.length) return s;
+      const copy = [...s];
+      [copy[index], copy[newIndex]] = [copy[newIndex], copy[index]];
+      return copy;
+    });
   };
 
   const updateSection = (index: number, field: keyof SectionData, value: string) => {
@@ -131,7 +150,7 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
   }
 
   return (
-    <div className="p-6 sm:p-8 lg:p-10 max-w-4xl">
+    <div className="p-6 sm:p-8 lg:p-10">
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
         <Button variant="ghost" size="icon" className="rounded-xl" onClick={() => router.push("/admin/pages")}>
@@ -220,35 +239,34 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
 
         {/* Sections */}
         {sections.map((section, si) => (
-          <AccordionItem key={si} value={`section-${si}`} className="border-none">
+          <AccordionItem key={section._key} value={section._key} className="border-none">
             <Card className="rounded-2xl border-none ring-0 shadow-warm overflow-hidden">
               <div className="flex items-center">
                 <AccordionTrigger className="flex-1 px-6 py-4 hover:no-underline">
-                  <div className="flex items-center gap-2">
-                    <GripVertical className="h-4 w-4 text-muted-foreground" />
-                    <span className="font-bold">{section.heading || section.id || `Section ${si + 1}`}</span>
-                    {(section.items ?? []).length > 0 && (
-                      <span className="text-xs text-muted-foreground">({(section.items ?? []).length} items)</span>
-                    )}
-                  </div>
+                  <span className="font-bold">{section.heading || `Section ${si + 1}`}</span>
+                  {(section.items ?? []).length > 0 && (
+                    <span className="ml-2 text-xs text-muted-foreground">({(section.items ?? []).length} items)</span>
+                  )}
                 </AccordionTrigger>
-                <Button type="button" variant="ghost" size="icon" className="mr-4 text-destructive hover:text-destructive" onClick={() => removeSection(si)}>
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center gap-1 mr-2">
+                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8" disabled={si === 0} onClick={() => moveSection(si, -1)}>
+                    <ChevronUp className="h-4 w-4" />
+                  </Button>
+                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8" disabled={si === sections.length - 1} onClick={() => moveSection(si, 1)}>
+                    <ChevronDown className="h-4 w-4" />
+                  </Button>
+                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => removeSection(si)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
               <AccordionContent>
                 <CardContent className="px-6 pb-6 pt-0">
                   <FieldGroup>
-                    <FieldGroup className="flex-row">
-                      <Field>
-                        <FieldLabel>ID</FieldLabel>
-                        <Input value={section.id ?? ""} onChange={(e) => updateSection(si, "id", e.target.value)} placeholder="e.g. welcome" />
-                      </Field>
-                      <Field>
-                        <FieldLabel>Heading</FieldLabel>
-                        <Input value={section.heading ?? ""} onChange={(e) => updateSection(si, "heading", e.target.value)} />
-                      </Field>
-                    </FieldGroup>
+                    <Field>
+                      <FieldLabel>Heading</FieldLabel>
+                      <Input value={section.heading ?? ""} onChange={(e) => updateSection(si, "heading", e.target.value)} />
+                    </Field>
                     <Field>
                       <FieldLabel>Body</FieldLabel>
                       <Textarea value={section.body ?? ""} onChange={(e) => updateSection(si, "body", e.target.value)} rows={3} />
@@ -279,10 +297,14 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
                                     <FieldLabel>Icon</FieldLabel>
                                     <Select value={item.icon ?? ""} onValueChange={(v) => updateItem(si, ii, "icon", v)}>
                                       <SelectTrigger>
-                                        <div className="flex items-center gap-2">
-                                          <IconPreview className="h-4 w-4 text-primary" />
-                                          <SelectValue placeholder="Choose icon" />
-                                        </div>
+                                        {item.icon ? (
+                                          <div className="flex items-center gap-2">
+                                            <IconPreview className="h-4 w-4 text-primary" />
+                                            <span>{item.icon}</span>
+                                          </div>
+                                        ) : (
+                                          <span className="opacity-40">Choose icon</span>
+                                        )}
                                       </SelectTrigger>
                                       <SelectContent>
                                         {iconNames.map((name) => {
@@ -291,7 +313,7 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
                                             <SelectItem key={name} value={name}>
                                               <div className="flex items-center gap-2">
                                                 <Icon className="h-4 w-4" />
-                                                {name}
+                                                <span>{name}</span>
                                               </div>
                                             </SelectItem>
                                           );

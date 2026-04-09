@@ -130,6 +130,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+  button, a, [role="button"], select, summary, [type="submit"], [type="button"], [type="reset"], label[for], [tabindex]:not([tabindex="-1"]) {
+    cursor: pointer;
+  }
+  ::placeholder {
+    opacity: 0.4;
+  }
   body {
     @apply bg-background text-foreground;
     overflow-wrap: break-word;
