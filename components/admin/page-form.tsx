@@ -134,7 +134,7 @@ export function PageForm({ initial, onDone }: PageFormProps) {
         <DialogDescription>Update the content for the {initial.slug} page.</DialogDescription>
       </DialogHeader>
 
-      <div className="mt-4 max-h-[60vh] overflow-y-auto space-y-6 pr-2">
+      <div className="mt-4 max-h-[75vh] overflow-y-auto space-y-6 pr-2">
         {/* Page Info */}
         <FieldGroup>
           <form.Field name="title">

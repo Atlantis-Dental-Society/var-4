@@ -69,7 +69,7 @@ export default function AdminPagesPage() {
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl rounded-2xl">
+        <DialogContent className="max-w-5xl rounded-2xl">
           {editing && (
             <PageForm
               initial={editing}
