@@ -45,7 +45,7 @@ export default function AdminPagesPage() {
           {pages.map((page) => (
             <button
               key={page.slug}
-              className="text-left"
+              className="text-left cursor-pointer"
               onClick={() => { setEditing(page); setOpen(true); }}
             >
               <Card className="h-full rounded-2xl border-none ring-0 shadow-warm hover:shadow-warm-lg transition-all hover:-translate-y-0.5">
