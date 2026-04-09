@@ -50,7 +50,7 @@ const sections = [
   {
     label: "Design System",
     description: "Colors, typography, shadows, and technical details",
-    href: "/admin/design",
+    href: "/design",
     icon: Palette,
     color: "bg-primary/10 text-primary",
   },

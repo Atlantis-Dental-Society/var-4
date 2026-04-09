@@ -15,7 +15,7 @@ const navItems = [
   { label: "Events", href: "/admin/events", icon: CalendarDays },
   { label: "Insights", href: "/admin/insights", icon: FileText },
   { label: "Members", href: "/admin/members", icon: Users },
-  { label: "Design System", href: "/admin/design", icon: Palette },
+  { label: "Design System", href: "/design", icon: Palette },
   { label: "Content Editor", href: "/tina", icon: Settings },
 ];
 

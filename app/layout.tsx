@@ -3,8 +3,6 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
 import { cn } from "@/lib/utils";
 import { getSiteConfig } from "@/lib/tina";
 
@@ -19,9 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const config = await getSiteConfig();
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={cn("antialiased font-sans", nunito.variable)}>
       <body>
@@ -45,11 +41,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               },
             }}
           />
-          <div className="flex min-h-svh flex-col">
-            <Header logo={config?.logo ?? undefined} />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
+          {children}
         </ThemeProvider>
       </body>
     </html>
