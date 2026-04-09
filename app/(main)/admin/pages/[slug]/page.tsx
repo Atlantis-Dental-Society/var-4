@@ -248,14 +248,14 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
                     <span className="ml-2 text-xs text-muted-foreground">({(section.items ?? []).length} items)</span>
                   )}
                 </AccordionTrigger>
-                <div className="flex items-center gap-1 mr-2">
-                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8" disabled={si === 0} onClick={() => moveSection(si, -1)}>
+                <div className="flex items-center gap-2 mr-4">
+                  <Button type="button" variant="outline" size="icon" className="h-8 w-8 rounded-lg" disabled={si === 0} onClick={() => moveSection(si, -1)}>
                     <ChevronUp className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8" disabled={si === sections.length - 1} onClick={() => moveSection(si, 1)}>
+                  <Button type="button" variant="outline" size="icon" className="h-8 w-8 rounded-lg" disabled={si === sections.length - 1} onClick={() => moveSection(si, 1)}>
                     <ChevronDown className="h-4 w-4" />
                   </Button>
-                  <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" onClick={() => removeSection(si)}>
+                  <Button type="button" variant="outline" size="icon" className="h-8 w-8 rounded-lg text-destructive border-destructive/30 hover:bg-destructive/10 hover:text-destructive" onClick={() => removeSection(si)}>
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
