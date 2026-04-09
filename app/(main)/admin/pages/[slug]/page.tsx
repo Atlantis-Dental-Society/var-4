@@ -295,16 +295,12 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
                                   </Field>
                                   <Field>
                                     <FieldLabel>Icon</FieldLabel>
-                                    <Select value={item.icon ?? ""} onValueChange={(v) => updateItem(si, ii, "icon", v)}>
+                                    <Select value={item.icon || undefined} onValueChange={(v) => updateItem(si, ii, "icon", v)}>
                                       <SelectTrigger>
-                                        {item.icon ? (
-                                          <div className="flex items-center gap-2">
-                                            <IconPreview className="h-4 w-4 text-primary" />
-                                            <span>{item.icon}</span>
-                                          </div>
-                                        ) : (
-                                          <span className="opacity-40">Choose icon</span>
-                                        )}
+                                        <div className="flex items-center gap-2">
+                                          {item.icon && <IconPreview className="h-4 w-4 text-primary" />}
+                                          <SelectValue placeholder="Choose icon" />
+                                        </div>
                                       </SelectTrigger>
                                       <SelectContent>
                                         {iconNames.map((name) => {
