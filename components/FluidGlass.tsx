@@ -117,7 +117,7 @@ const ModeWrapper = memo(function ModeWrapper({
     gl.setRenderTarget(buffer);
     gl.render(scene, camera);
     gl.setRenderTarget(null);
-    gl.setClearColor(0x5227ff, 1);
+    gl.setClearColor(0x2D2419, 1);
   });
 
   const { scale, ior, thickness, anisotropy, chromaticAberration, ...extraMat } = modeProps as {
@@ -312,7 +312,7 @@ function Typography() {
       anchorX="center"
       anchorY="middle"
     >
-      React Bits
+      Design System
     </Text>
   );
 }
