@@ -52,7 +52,6 @@ export function InsightForm({ initial, onDone }: InsightFormProps) {
     } as InsightInput,
     validators: {
       onSubmit: insightSchema,
-      onChange: insightSchema,
     },
     onSubmit: async ({ value }) => {
       const url = initial ? `/api/insights/${initial.id}` : "/api/insights";

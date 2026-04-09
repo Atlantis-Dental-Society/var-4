@@ -52,7 +52,6 @@ export function EventForm({ initial, onDone }: EventFormProps) {
     } as EventInput,
     validators: {
       onSubmit: eventSchema,
-      onChange: eventSchema,
     },
     onSubmit: async ({ value }) => {
       const url = initial ? `/api/events/${initial.id}` : "/api/events";

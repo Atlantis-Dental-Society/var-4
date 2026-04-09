@@ -12,7 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Leaf, Eye, EyeOff, Loader2 } from "lucide-react";
+import { PasswordInput } from "@/components/password-input";
+import { Leaf, Loader2 } from "lucide-react";
 
 const signupSchema = z
   .object({
@@ -36,8 +37,6 @@ type SignupInput = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const form = useForm({
@@ -173,27 +172,15 @@ export default function SignupPage() {
                 return (
                   <Field data-invalid={isInvalid || undefined}>
                     <FieldLabel htmlFor="signup-password">Password</FieldLabel>
-                    <div className="relative">
-                      <Input
-                        id="signup-password"
-                        type={showPassword ? "text" : "password"}
-                        value={f.state.value}
-                        onBlur={f.handleBlur}
-                        onChange={(e) => f.handleChange(e.target.value)}
-                        placeholder="At least 8 characters"
-                        aria-invalid={isInvalid || undefined}
-                        autoComplete="new-password"
-                        className="pr-10"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                        tabIndex={-1}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
+                    <PasswordInput
+                      id="signup-password"
+                      value={f.state.value}
+                      onBlur={f.handleBlur}
+                      onChange={(e) => f.handleChange(e.target.value)}
+                      placeholder="At least 8 characters"
+                      aria-invalid={isInvalid || undefined}
+                      autoComplete="new-password"
+                    />
                     {isInvalid && <FieldError errors={f.state.meta.errors} />}
                   </Field>
                 );
@@ -206,27 +193,15 @@ export default function SignupPage() {
                 return (
                   <Field data-invalid={isInvalid || undefined}>
                     <FieldLabel htmlFor="signup-confirm">Confirm Password</FieldLabel>
-                    <div className="relative">
-                      <Input
-                        id="signup-confirm"
-                        type={showConfirm ? "text" : "password"}
-                        value={f.state.value}
-                        onBlur={f.handleBlur}
-                        onChange={(e) => f.handleChange(e.target.value)}
-                        placeholder="Re-enter your password"
-                        aria-invalid={isInvalid || undefined}
-                        autoComplete="new-password"
-                        className="pr-10"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirm(!showConfirm)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                        tabIndex={-1}
-                      >
-                        {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
+                    <PasswordInput
+                      id="signup-confirm"
+                      value={f.state.value}
+                      onBlur={f.handleBlur}
+                      onChange={(e) => f.handleChange(e.target.value)}
+                      placeholder="Re-enter your password"
+                      aria-invalid={isInvalid || undefined}
+                      autoComplete="new-password"
+                    />
                     {isInvalid && <FieldError errors={f.state.meta.errors} />}
                   </Field>
                 );

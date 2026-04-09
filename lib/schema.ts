@@ -41,7 +41,7 @@ export const insights = pgTable("insights", {
 
 export const photos = pgTable("photos", {
   id: uuid("id").defaultRandom().primaryKey(),
-  entityType: text("entity_type").notNull(), // "event" or "insight"
+  entityType: text("entity_type").notNull(),
   entityId: uuid("entity_id").notNull(),
   url: text("url").notNull(),
   key: text("key").notNull(),

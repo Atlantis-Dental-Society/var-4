@@ -12,11 +12,12 @@ import {
   FolderOpen,
 } from "lucide-react";
 import { PageHero } from "@/components/page-hero";
-import { getPageContent, getSections, type Section } from "@/lib/content";
+import { getPageContent, getSections } from "@/lib/content";
+import type { SectionData } from "@/lib/schema";
 import { getIcon } from "@/lib/icons";
 import { db } from "@/lib/db";
 import { events } from "@/lib/schema";
-import { eq } from "drizzle-orm";
+import { eq, gte, and } from "drizzle-orm";
 
 const sectionIcons: Record<string, React.ElementType> = {
   welcome: Sparkles,
@@ -29,12 +30,13 @@ const sectionIcons: Record<string, React.ElementType> = {
 };
 
 export default async function HomePage() {
+  const today = new Date().toISOString().split("T")[0];
   const [page, upcomingEvents] = await Promise.all([
     getPageContent("home"),
     db
       .select()
       .from(events)
-      .where(eq(events.published, true))
+      .where(and(eq(events.published, true), gte(events.date, today)))
       .orderBy(events.date)
       .limit(3),
   ]);
@@ -106,8 +108,7 @@ export default async function HomePage() {
   );
 }
 
-/* ── Welcome Section: Left-aligned, no card ── */
-function WelcomeSection({ section }: { section: Section }) {
+function WelcomeSection({ section }: { section: SectionData }) {
   return (
     <section className="relative py-24 sm:py-28 overflow-hidden">
       <div className="absolute -top-16 -right-16 h-48 w-48 blob-shape-1 bg-primary/8 blur-3xl" />
@@ -127,13 +128,12 @@ function WelcomeSection({ section }: { section: Section }) {
   );
 }
 
-/* ── Feature Grid Section: Cards with icons in a grid ── */
 function FeatureGridSection({
   section,
   color = "primary",
   columns = 3,
 }: {
-  section: Section;
+  section: SectionData;
   color?: "primary" | "sage" | "terracotta";
   columns?: 2 | 3;
 }) {
@@ -189,8 +189,7 @@ function FeatureGridSection({
   );
 }
 
-/* ── Split Feature Section: Text left, item cards right ── */
-function SplitFeatureSection({ section }: { section: Section }) {
+function SplitFeatureSection({ section }: { section: SectionData }) {
   const items = (section.items ?? []).filter((i): i is NonNullable<typeof i> => !!i);
 
   return (
@@ -241,7 +240,6 @@ function SplitFeatureSection({ section }: { section: Section }) {
   );
 }
 
-/* ── Events Teaser Section ── */
 function EventsTeaserSection({
   heading,
   body,
@@ -306,8 +304,7 @@ function EventsTeaserSection({
   );
 }
 
-/* ── Partner CTA Section: Gradient card ── */
-function PartnerCTASection({ section }: { section: Section }) {
+function PartnerCTASection({ section }: { section: SectionData }) {
   return (
     <section className="py-24 sm:py-28">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
@@ -340,8 +337,7 @@ function PartnerCTASection({ section }: { section: Section }) {
   );
 }
 
-/* ── Join CTA Section: Gradient card centered ── */
-function JoinCTASection({ section }: { section: Section }) {
+function JoinCTASection({ section }: { section: SectionData }) {
   return (
     <section className="py-24 sm:py-28">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
@@ -365,14 +361,13 @@ function JoinCTASection({ section }: { section: Section }) {
   );
 }
 
-/* ── Fallback Section: for any unknown section types ── */
 function FallbackSection({
   icon: Icon,
   section,
   alt,
 }: {
   icon: React.ElementType;
-  section: Section;
+  section: SectionData;
   alt: boolean;
 }) {
   return (

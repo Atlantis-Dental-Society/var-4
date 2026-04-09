@@ -24,16 +24,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ArrowLeft, Plus, Trash2, Loader2, ChevronUp, ChevronDown } from "lucide-react";
-import { getIcon } from "@/lib/icons";
+import { getIcon, iconNames } from "@/lib/icons";
 import type { HeroData, SectionData, SectionItem } from "@/lib/schema";
-
-const iconNames = [
-  "CalendarDays", "HeartHandshake", "GraduationCap", "FileCheck", "Handshake",
-  "Users", "BookOpen", "Lightbulb", "MessageSquare", "ClipboardList",
-  "FileText", "CheckSquare", "Sparkles", "Stethoscope", "FlaskConical",
-  "Award", "Link2", "FolderOpen", "UserCheck", "Target", "Globe",
-  "Building2", "Megaphone", "PresentationIcon",
-];
 
 // Stable keys for React reconciliation
 let keyCounter = 0;
@@ -241,7 +233,7 @@ export default function EditPagePage({ params }: { params: Promise<{ slug: strin
         {sections.map((section, si) => (
           <AccordionItem key={section._key} value={section._key} className="border-none">
             <Card className="rounded-2xl border-none ring-0 shadow-warm overflow-hidden">
-              <div className="flex items-center">
+              <div className="flex items-center justify-between">
                 <AccordionTrigger className="flex-1 px-6 py-4 hover:no-underline">
                   <span className="font-bold">{section.heading || `Section ${si + 1}`}</span>
                   {(section.items ?? []).length > 0 && (

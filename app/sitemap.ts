@@ -16,10 +16,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: path === "" ? 1.0 : 0.8,
   }));
 
-  const allEvents = await db
-    .select({ id: events.id, updatedAt: events.updatedAt })
-    .from(events)
-    .where(eq(events.published, true));
+  const [allEvents, allInsights] = await Promise.all([
+    db.select({ id: events.id, updatedAt: events.updatedAt }).from(events).where(eq(events.published, true)),
+    db.select({ slug: insights.slug, updatedAt: insights.updatedAt }).from(insights).where(eq(insights.published, true)),
+  ]);
 
   const eventPages = allEvents.map((e) => ({
     url: `${BASE}/events/${e.id}`,
@@ -27,11 +27,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
-
-  const allInsights = await db
-    .select({ slug: insights.slug, updatedAt: insights.updatedAt })
-    .from(insights)
-    .where(eq(insights.published, true));
 
   const insightPages = allInsights.map((i) => ({
     url: `${BASE}/insights/${i.slug}`,

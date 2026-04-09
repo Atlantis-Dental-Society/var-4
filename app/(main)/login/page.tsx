@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Leaf, Eye, EyeOff, Loader2 } from "lucide-react";
+import { PasswordInput } from "@/components/password-input";
+import { Leaf, Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -33,7 +34,6 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const rawCallback = searchParams.get("callbackUrl") ?? "/admin";
   const callbackUrl = rawCallback.startsWith("/") && !rawCallback.startsWith("//") ? rawCallback : "/admin";
-  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const form = useForm({
@@ -121,27 +121,15 @@ function LoginForm() {
                 return (
                   <Field data-invalid={isInvalid || undefined}>
                     <FieldLabel htmlFor="login-password">Password</FieldLabel>
-                    <div className="relative">
-                      <Input
-                        id="login-password"
-                        type={showPassword ? "text" : "password"}
-                        value={f.state.value}
-                        onBlur={f.handleBlur}
-                        onChange={(e) => f.handleChange(e.target.value)}
-                        placeholder="Your password"
-                        aria-invalid={isInvalid || undefined}
-                        autoComplete="current-password"
-                        className="pr-10"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                        tabIndex={-1}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
+                    <PasswordInput
+                      id="login-password"
+                      value={f.state.value}
+                      onBlur={f.handleBlur}
+                      onChange={(e) => f.handleChange(e.target.value)}
+                      placeholder="Your password"
+                      aria-invalid={isInvalid || undefined}
+                      autoComplete="current-password"
+                    />
                     {isInvalid && <FieldError errors={f.state.meta.errors} />}
                   </Field>
                 );

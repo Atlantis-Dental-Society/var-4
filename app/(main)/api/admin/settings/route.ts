@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { siteConfig } from "@/lib/schema";
+import { eq } from "drizzle-orm";
 import { siteConfigSchema } from "@/lib/validations";
 import { requireAdmin } from "@/lib/require-admin";
 
@@ -35,7 +36,7 @@ export async function PUT(request: Request) {
     const [updated] = await db
       .update(siteConfig)
       .set({ ...result.data, updatedAt: new Date() })
-      .where((await import("drizzle-orm")).eq(siteConfig.id, existing.id))
+      .where(eq(siteConfig.id, existing.id))
       .returning();
 
     return NextResponse.json(updated);

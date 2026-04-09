@@ -12,14 +12,12 @@ import { PhotoGallery } from "@/components/photo-gallery";
 export default async function EventDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
-  const [event] = await db.select().from(events).where(eq(events.id, id));
+  const [eventRows, eventPhotos] = await Promise.all([
+    db.select().from(events).where(eq(events.id, id)),
+    db.select().from(photos).where(and(eq(photos.entityType, "events"), eq(photos.entityId, id))).orderBy(photos.order),
+  ]);
+  const event = eventRows[0];
   if (!event) notFound();
-
-  const eventPhotos = await db
-    .select()
-    .from(photos)
-    .where(and(eq(photos.entityType, "events"), eq(photos.entityId, event.id)))
-    .orderBy(photos.order);
 
   const dateObj = new Date(event.date + "T00:00:00");
 
@@ -35,7 +33,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </Link>
         </Button>
 
-        {/* Date badge */}
         <div className="flex items-start gap-6 mb-8">
           <div className="flex h-20 w-20 shrink-0 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 text-primary">
             <span className="text-2xl font-extrabold leading-none">{dateObj.getDate()}</span>
@@ -59,7 +56,6 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </div>
         </div>
 
-        {/* Event details card */}
         <Card className="rounded-2xl border-none ring-0 shadow-warm mb-10">
           <CardContent className="p-6 space-y-4">
             <div className="flex flex-wrap gap-6 text-sm">
@@ -111,14 +107,12 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
           </CardContent>
         </Card>
 
-        {/* Description */}
         {event.description && (
           <div className="mb-10">
             <p className="text-muted-foreground leading-relaxed text-lg">{event.description}</p>
           </div>
         )}
 
-        {/* Photo gallery */}
         {eventPhotos.length > 0 && (
           <div className="mb-10">
             <h2 className="text-xl font-bold mb-4">Photos</h2>

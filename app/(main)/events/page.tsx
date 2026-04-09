@@ -23,7 +23,7 @@ export default async function EventsPage() {
   const upcoming = allEvents.filter((e) => e.date >= today);
   const past = allEvents.filter((e) => e.date < today);
 
-  // Fetch all photos for these events in one query
+  // Batch-fetch all photos for displayed events
   const eventIds = allEvents.map((e) => e.id);
   const allPhotos = eventIds.length > 0
     ? await db.select().from(photos).where(and(eq(photos.entityType, "events"), inArray(photos.entityId, eventIds))).orderBy(photos.order)
@@ -53,7 +53,6 @@ export default async function EventsPage() {
 
       <section className="-mt-8 pb-24">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          {/* Upcoming Events */}
           <div className="flex items-center gap-3 mb-6">
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/10">
               <CalendarDays className="h-5 w-5 text-primary" />
@@ -78,7 +77,6 @@ export default async function EventsPage() {
             </div>
           )}
 
-          {/* Past Events */}
           {past.length > 0 && (
             <>
               <div className="flex items-center gap-3 mt-16 mb-6">

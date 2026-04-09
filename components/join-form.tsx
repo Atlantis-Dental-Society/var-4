@@ -5,7 +5,7 @@ import { joinSubmissionSchema, type JoinSubmissionInput } from "@/lib/validation
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Field, FieldGroup, FieldLabel, FieldError } from "@/components/ui/field";
+import { Field, FieldLabel, FieldError } from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -33,7 +33,6 @@ export function JoinForm() {
     } as JoinSubmissionInput,
     validators: {
       onSubmit: joinSubmissionSchema,
-      onChange: joinSubmissionSchema,
     },
     onSubmit: async ({ value }) => {
       try {

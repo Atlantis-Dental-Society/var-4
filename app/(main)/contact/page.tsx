@@ -4,8 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PageHero } from "@/components/page-hero";
 
 export default async function ContactPage() {
-  const page = await getPageContent("contact");
-  const site = await getSiteConfig();
+  const [page, site] = await Promise.all([getPageContent("contact"), getSiteConfig()]);
   const hero = page?.hero;
 
   return (

@@ -34,7 +34,6 @@ export function PhotoUploader({ entityType, entityId, photos, onPhotosChange }: 
 
     for (const file of imageFiles) {
       try {
-        // 1. Get presigned URL
         const res = await fetch("/api/upload", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -49,14 +48,12 @@ export function PhotoUploader({ entityType, entityId, photos, onPhotosChange }: 
         if (!res.ok) continue;
         const { presignedUrl, publicUrl, key } = await res.json();
 
-        // 2. Upload to S3
         await fetch(presignedUrl, {
           method: "PUT",
           headers: { "Content-Type": file.type },
           body: file,
         });
 
-        // 3. Save photo record
         const photoRes = await fetch("/api/photos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

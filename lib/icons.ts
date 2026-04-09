@@ -53,6 +53,8 @@ const iconMap: Record<string, LucideIcon> = {
   PresentationIcon,
 };
 
+export const iconNames = Object.keys(iconMap);
+
 export function getIcon(name?: string | null): LucideIcon {
   if (!name) return Sparkles;
   return iconMap[name] ?? Sparkles;

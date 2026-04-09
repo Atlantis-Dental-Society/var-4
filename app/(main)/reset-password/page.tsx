@@ -8,10 +8,10 @@ import { z } from "zod/v4";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Field, FieldLabel, FieldError } from "@/components/ui/field";
-import { Leaf, Loader2, Eye, EyeOff } from "lucide-react";
+import { PasswordInput } from "@/components/password-input";
+import { Leaf, Loader2 } from "lucide-react";
 
 const schema = z
   .object({
@@ -36,8 +36,6 @@ function ResetPasswordForm() {
   const token = searchParams.get("token");
   const [success, setSuccess] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
   const form = useForm({
     defaultValues: { password: "", confirmPassword: "" },
@@ -127,27 +125,15 @@ function ResetPasswordForm() {
                   return (
                     <Field data-invalid={isInvalid || undefined}>
                       <FieldLabel htmlFor="reset-password">New Password</FieldLabel>
-                      <div className="relative">
-                        <Input
-                          id="reset-password"
-                          type={showPassword ? "text" : "password"}
-                          value={f.state.value}
-                          onBlur={f.handleBlur}
-                          onChange={(e) => f.handleChange(e.target.value)}
-                          placeholder="At least 8 characters"
-                          aria-invalid={isInvalid || undefined}
-                          autoComplete="new-password"
-                          className="pr-10"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                          tabIndex={-1}
-                        >
-                          {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </button>
-                      </div>
+                      <PasswordInput
+                        id="reset-password"
+                        value={f.state.value}
+                        onBlur={f.handleBlur}
+                        onChange={(e) => f.handleChange(e.target.value)}
+                        placeholder="At least 8 characters"
+                        aria-invalid={isInvalid || undefined}
+                        autoComplete="new-password"
+                      />
                       {isInvalid && <FieldError errors={f.state.meta.errors} />}
                     </Field>
                   );
@@ -160,27 +146,15 @@ function ResetPasswordForm() {
                   return (
                     <Field data-invalid={isInvalid || undefined}>
                       <FieldLabel htmlFor="reset-confirm">Confirm Password</FieldLabel>
-                      <div className="relative">
-                        <Input
-                          id="reset-confirm"
-                          type={showConfirm ? "text" : "password"}
-                          value={f.state.value}
-                          onBlur={f.handleBlur}
-                          onChange={(e) => f.handleChange(e.target.value)}
-                          placeholder="Re-enter your password"
-                          aria-invalid={isInvalid || undefined}
-                          autoComplete="new-password"
-                          className="pr-10"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirm(!showConfirm)}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                          tabIndex={-1}
-                        >
-                          {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                        </button>
-                      </div>
+                      <PasswordInput
+                        id="reset-confirm"
+                        value={f.state.value}
+                        onBlur={f.handleBlur}
+                        onChange={(e) => f.handleChange(e.target.value)}
+                        placeholder="Re-enter your password"
+                        aria-invalid={isInvalid || undefined}
+                        autoComplete="new-password"
+                      />
                       {isInvalid && <FieldError errors={f.state.meta.errors} />}
                     </Field>
                   );

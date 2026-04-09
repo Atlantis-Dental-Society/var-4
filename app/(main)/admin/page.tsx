@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { CalendarDays, FileText, Settings, Users, Mail, BookOpen, Palette, FileStack } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
