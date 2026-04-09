@@ -39,6 +39,7 @@ const sections = [
     href: "/admin/email",
     icon: Mail,
     color: "bg-sage/10 text-sage",
+    disabled: true,
   },
   {
     label: "Resources",
@@ -46,6 +47,7 @@ const sections = [
     href: "/admin/resources",
     icon: BookOpen,
     color: "bg-terracotta/10 text-terracotta",
+    disabled: true,
   },
   {
     label: "Design System",
@@ -65,19 +67,36 @@ export default function AdminDashboard() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {sections.map((section) => (
-          <Link key={section.href} href={section.href} className="group">
-            <Card className="h-full rounded-2xl border-none ring-0 shadow-warm hover:shadow-warm-lg transition-all hover:-translate-y-0.5">
-              <CardContent className="p-6">
-                <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${section.color}`}>
-                  <section.icon className="h-6 w-6" />
-                </div>
-                <h2 className="font-bold text-lg group-hover:text-primary transition-colors">{section.label}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">{section.description}</p>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
+        {sections.map((section) => {
+          if (section.disabled) {
+            return (
+              <div key={section.href} className="cursor-not-allowed">
+                <Card className="h-full rounded-2xl border-none ring-0 shadow-warm opacity-40 pointer-events-none">
+                  <CardContent className="p-6">
+                    <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${section.color}`}>
+                      <section.icon className="h-6 w-6" />
+                    </div>
+                    <h2 className="font-bold text-lg">{section.label} <span className="text-xs font-normal text-muted-foreground">(Coming Soon)</span></h2>
+                    <p className="mt-1 text-sm text-muted-foreground">{section.description}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            );
+          }
+          return (
+            <Link key={section.href} href={section.href} className="group">
+              <Card className="h-full rounded-2xl border-none ring-0 shadow-warm hover:shadow-warm-lg transition-all hover:-translate-y-0.5">
+                <CardContent className="p-6">
+                  <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-xl ${section.color}`}>
+                    <section.icon className="h-6 w-6" />
+                  </div>
+                  <h2 className="font-bold text-lg group-hover:text-primary transition-colors">{section.label}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">{section.description}</p>
+                </CardContent>
+              </Card>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

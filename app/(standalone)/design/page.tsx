@@ -67,7 +67,7 @@ const blobs = [
 ];
 
 const techStack = [
-  { name: "Next.js 15", role: "Framework" },
+  { name: "Next.js 16", role: "Framework" },
   { name: "React 19", role: "UI Library" },
   { name: "TypeScript 5.9", role: "Language" },
   { name: "Tailwind CSS 4", role: "Styling" },
@@ -374,8 +374,7 @@ export default function DesignSystemPage() {
           <div className="text-center space-y-4">
             <p className="text-xs font-bold tracking-[0.3em] uppercase text-[#D4AF37]/40">Built by</p>
             <p className="text-3xl font-extrabold text-[#FAF5ED]">FZ1010</p>
-            <p className="text-sm text-[#B8A99A]/60">Atlantis Dental Society &middot; York University</p>
-            <p className="text-sm text-[#B8A99A]/40">atlantisdentalsociety.ca</p>
+            <p className="text-sm text-[#B8A99A]/60">farhanzare1010@gmail.com</p>
           </div>
         </section>
       </div>

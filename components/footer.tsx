@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Leaf, Heart, Mail, Instagram } from "lucide-react";
+import Image from "next/image";
+import { Heart, Mail, Instagram } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export function Footer() {
@@ -13,9 +14,7 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex items-center gap-2.5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary/15">
-                <Leaf className="h-5 w-5 text-primary" />
-              </div>
+              <Image src="/logo.png" alt="ADS" width={36} height={36} className="h-9 w-9" />
               <span className="text-lg font-bold text-foreground">ADS</span>
             </div>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">Everything pre-dental, all in one place.</p>

@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "ads-atlantis-media.s3.us-east-1.amazonaws.com",
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   async rewrites() {
